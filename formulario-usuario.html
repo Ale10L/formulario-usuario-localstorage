@@ -1,0 +1,102 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <link rel="stylesheet" href="estilos/estilos.css">
+  <title>Registro de usuarios</title>
+</head>
+
+<body class="root">
+  <h1 class="titulo">FORMULARIO DE REGISTRO DE USUARIOS</h1>
+  <nav class="navbar navbar-expand-lg gap-2 d-md-flex justify-content-center">
+    <a class="nav-link text-white"href="listado-usuario.html">Listado
+        usuarios</a>
+  </nav>
+  <div class="row">
+    <form class='form'>
+      <div class='form_group'>
+        <input type="text" class='nombre_completo' name='nombre_completo' required />
+        <label class='label'>Nombre Completo</label>
+        <br />
+        <label class='text-white'>El campo nombre completo es obligatorio</label>
+        <span class='barra'></span>
+      </div>
+      <div class='form_group'>
+        <input type="date" class='fecha_nacimiento' name='fecha_nacimiento' required />
+        <label class='label'>Fecha de nacimiento</label>
+        <br />
+        <label class='text-white'>El campo fecha de nacimiento es obligatorio</label>
+        <br />
+        <label class='text-white'>El usuario debe ser mayor de edad</label>
+        <span class='barra'></span>
+      </div>
+      <div class='form_group'>
+        <input type="email" class='correo_electronico' name='correo_electronico' required />
+        <label class='label'>Correo electrónico</label>
+        <br />
+        <label class='text-white'>El campo correo electrónico es obligatorio</label>
+        <br />
+        <label class='text-white'>Correo electrónico inválido</label>
+        <span class='barra'></span>
+      </div>
+      <div>
+        <div class='form_group'>
+          <input type="password" class='contraseña' name='contraseña' required />
+          <label class='label'>Contraseña</label>
+          <br />
+          <label class='text-white'>El campo contraseña es obligatorio</label>
+          <span class='barra'></span>
+        </div>
+        <div class='form_group'>
+          <input type="password" class='confirmacion' name='confirmacion' required />
+          <label class='label'>Confirmar contraseña</label>
+          <br />
+          <label class='text-white'>El campo confirmar contraseña es obligatorio</label>
+          <br />
+          <label class='text-white'>Las contraseñas deben coincidir</label>
+          <span class='barra'></span>
+        </div>
+      </div>
+      <div class='form_group'>
+        <select class='genero' required name='genero_id' defaultValue="seleccione_genero">
+          <option selected disabled={true}>Seleccione un género</option>
+          <option>Masculino</option>
+          <option>Femenino</option>
+          <option value="otro_genero">Otro</option>
+        </select>
+        <input class="genero" placeholder="Ingrese otro género" name="nuevo_genero" />
+        <label class='label'>Género</label>
+        <br />
+        <label class='text-white'>El campo género es obligatorio</label>
+        <span class='barra'></span>
+      </div>
+      <div class='form_group'>
+        <select class='pais' required name='pais_id' defaultValue="seleccione_pais">
+          <option value="seleccione_pais" selected disabled={true}>Seleccione un país</option>
+          <option>México</option>
+          <option>Estados Unidos</option>
+          <option>Canadá</option>
+          <option value="otro_pais">Otro</option>
+        </select>
+        <input placeholder="Ingrese otro país" class="pais" name="nuevo_pais" />
+        <label class='label'>País de residencia</label>
+        <br />
+        <label class='text-white'>El campo país es obligatorio</label>
+        <span class='barra'></span>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <button class="btn btn-primary" onClick='' id='btnAceptar'>
+          Agregar
+        </button>
+        <button class="btn btn-danger">Cancelar</button>
+      </div>
+    </form>
+  </div>
+  <script src='formulario-usuario.js'></script>
+</body>
+
+</html>

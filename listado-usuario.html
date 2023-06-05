@@ -1,0 +1,43 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="estilos/estilos.css">
+    <title>Registro de usuarios</title>
+</head>
+
+<body class="root">
+    <h1 class="titulo">FORMULARIO DE REGISTRO DE USUARIOS</h1>
+    <nav class="navbar navbar-expand-lg gap-2 d-md-flex justify-content-center">
+        <a href='formulario-usuario.html' class='nav-link text-white'>Volver</a>
+        <a class="nav-link text-white" href="listado-usuario.html">Listado
+            usuarios</a>
+    </nav>
+    <div class='container'>
+        <div class="row">
+            <table class='table table-striped'>
+                <thead class='table-dark'>
+                    <tr>
+                        <th class='text-center' scope='col'>NOMBRE COMPLETO</th>
+                        <th class='text-center' scope='col'>CORREO ELECTRONICO</th>
+                    </tr>
+                </thead>
+                <tbody id="listado">
+                    {usuarios.map((usuario) => (
+                    <tr key={usuario.id}>
+                        <td class='text-center text-white'>{usuario.nombre_completo}</td>
+                        <td class='text-center text-white'>{usuario.correo_electronico}</td>
+                    </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src='listado-usuario.js'></script>
+</body>
+
+</html>
