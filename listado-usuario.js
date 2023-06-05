@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
       var html = "";
       usuarios.forEach(function (usuario) {
         html += "<tr>";
-        html += "<td class='text-center text-white'>" + usuario.nombre_completo + "</td>";
-        html += "<td class='text-center text-white'>" + usuario.correo_electronico + "</td>";
+        html += "<td class='text-center text-white'>" + usuario.nombreCompleto + "</td>";
+        html += "<td class='text-center text-white'>" + usuario.correoElectronico + "</td>";
         html += "</tr>";
       });
       listadoUsuarios.innerHTML = html;

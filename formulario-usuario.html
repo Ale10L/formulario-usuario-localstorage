@@ -17,7 +17,7 @@
         usuarios</a>
   </nav>
   <div class="row">
-    <form class='form'>
+    <form class='form' onchange="controlBtnAceptar()">
       <div class='form_group'>
         <input type="text" class='nombre_completo' name='nombre_completo' required />
         <label class='label'>Nombre Completo</label>
@@ -26,70 +26,71 @@
         <span class='barra'></span>
       </div>
       <div class='form_group'>
-        <input type="date" class='fecha_nacimiento' name='fecha_nacimiento' required />
+        <input type="date" class='fecha_nacimiento' name='fecha_nacimiento' id="fecha_nacimiento" onchange="controlFecha()" required />
         <label class='label'>Fecha de nacimiento</label>
         <br />
         <label class='text-white'>El campo fecha de nacimiento es obligatorio</label>
         <br />
-        <label class='text-white'>El usuario debe ser mayor de edad</label>
+        <label class='text-white' id='lbl_edad' >El usuario debe ser mayor de edad</label>
         <span class='barra'></span>
       </div>
       <div class='form_group'>
-        <input type="email" class='correo_electronico' name='correo_electronico' required />
+        <input type="email" class='correo_electronico' name='correo_electronico' required 
+        onchange="controlEmail()"/>
         <label class='label'>Correo electrónico</label>
         <br />
         <label class='text-white'>El campo correo electrónico es obligatorio</label>
         <br />
-        <label class='text-white'>Correo electrónico inválido</label>
+        <label class='text-white' id='lbl_email'>Correo electrónico inválido</label>
         <span class='barra'></span>
       </div>
       <div>
         <div class='form_group'>
-          <input type="password" class='contraseña' name='contraseña' required />
+          <input type="password" class='contraseña' name='contraseña' required onchange="controlContraseña()" />
           <label class='label'>Contraseña</label>
           <br />
           <label class='text-white'>El campo contraseña es obligatorio</label>
           <span class='barra'></span>
         </div>
         <div class='form_group'>
-          <input type="password" class='confirmacion' name='confirmacion' required />
+          <input type="password" class='confirmacion' name='confirmacion' required onchange="controlContraseña()"/>
           <label class='label'>Confirmar contraseña</label>
           <br />
           <label class='text-white'>El campo confirmar contraseña es obligatorio</label>
           <br />
-          <label class='text-white'>Las contraseñas deben coincidir</label>
+          <label class='text-white' id="lbl_coincidencia">Las contraseñas deben coincidir</label>
           <span class='barra'></span>
         </div>
       </div>
       <div class='form_group'>
-        <select class='genero' required name='genero_id' defaultValue="seleccione_genero">
-          <option selected disabled={true}>Seleccione un género</option>
+        <select class='genero' required name='genero_id' defaultValue="seleccione_genero" onchange="controlGenero()">
+          <option selected value='seleccione_genero' disabled={true}>Seleccione un género</option>
           <option>Masculino</option>
           <option>Femenino</option>
           <option value="otro_genero">Otro</option>
         </select>
-        <input class="genero" placeholder="Ingrese otro género" name="nuevo_genero" />
+        <input class="genero" placeholder="Ingrese otro género" name="nuevo_genero" id='otroGeneroInput'/>
         <label class='label'>Género</label>
         <br />
         <label class='text-white'>El campo género es obligatorio</label>
         <span class='barra'></span>
       </div>
       <div class='form_group'>
-        <select class='pais' required name='pais_id' defaultValue="seleccione_pais">
+        <select class='pais' required name='pais_id' defaultValue="seleccione_pais" onchange="controlPais()">
           <option value="seleccione_pais" selected disabled={true}>Seleccione un país</option>
           <option>México</option>
           <option>Estados Unidos</option>
           <option>Canadá</option>
           <option value="otro_pais">Otro</option>
         </select>
-        <input placeholder="Ingrese otro país" class="pais" name="nuevo_pais" />
+        <input placeholder="Ingrese otro país" class="pais" name="nuevo_pais" id="otroPaisInput"/>
         <label class='label'>País de residencia</label>
         <br />
         <label class='text-white'>El campo país es obligatorio</label>
         <span class='barra'></span>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-        <button class="btn btn-primary" onClick='' id='btnAceptar'>
+        <button class="btn btn-primary" id='btnAceptar' disabled>
           Agregar
         </button>
         <button class="btn btn-danger">Cancelar</button>

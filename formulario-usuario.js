@@ -13,30 +13,87 @@ const btnAceptar = document.getElementById('btnAceptar');
 
 // Agregar evento de clic al botón Aceptar
 btnAceptar.addEventListener('click', guardarUsuario);
+nombreCompletoInput.addEventListener('input', controlBtnAceptar);
+fechaNacimientoInput.addEventListener('change', controlBtnAceptar);
+correoElectronicoInput.addEventListener('input', controlBtnAceptar);
+contraseñaInput.addEventListener('input', controlBtnAceptar);
+confirmacionInput.addEventListener('input', controlBtnAceptar);
+generoSelect.addEventListener('change', controlBtnAceptar);
+nuevoGeneroInput.addEventListener('input', controlBtnAceptar);
+paisSelect.addEventListener('change', controlBtnAceptar);
+nuevoPaisInput.addEventListener('input', controlBtnAceptar);
+
+controlBtnAceptar();
+
+function controlBtnAceptar(){
+  // Validar los campos (puedes agregar más validaciones según tus necesidades)
+  const genero = generoSelect.value === 'otro_genero' ? nuevoGeneroInput.value : generoSelect.value;
+  const pais = paisSelect.value === 'otro_pais' ? nuevoPaisInput.value : paisSelect.value;
+  const camposIncompletos = !nombreCompletoInput.value || !fechaNacimientoInput.value || !correoElectronicoInput.value || !contraseñaInput.value || !confirmacionInput.value || !genero || !pais;
+  const controles = !controlFecha() || !controlContraseña() || !controlEmail() || !controlGenero() || !controlPais();
+  const formularioCompleto = camposIncompletos || controles;
+  btnAceptar.disabled = formularioCompleto;
+  console.log(btnAceptar.disabled)
+}
+
+function controlFecha() {
+  const fechaNacimiento = new Date(fechaNacimientoInput.value).getUTCDate()
+  const fechaActual = new Date().getUTCDate()
+  const edad = fechaActual - fechaNacimiento
+  if (edad < 0) {
+    document.getElementById('lbl_edad').style.display = 'inline'
+  } else {
+    document.getElementById('lbl_edad').style.display = 'none'
+  }
+}
+
+function controlEmail() {
+  const regexp = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+  //if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(correoElectronicoInput.value) ){
+  if (regexp.test(correoElectronicoInput.value)) {
+    document.getElementById('lbl_email').style.display = 'none'
+  } else {
+    document.getElementById('lbl_email').style.display = 'inline'
+  }
+}
+
+function controlContraseña() {
+  if ((contraseñaInput.value !== confirmacionInput.value) || ((contraseñaInput.value === '') && (confirmacionInput.value === ''))) {
+    document.getElementById('lbl_coincidencia').style.display = 'inline'
+  } else {
+    document.getElementById('lbl_coincidencia').style.display = 'none'
+  }
+}
+
+function controlGenero() {
+  if(generoSelect.value !== 'otro_genero' || generoSelect.value === 'seleccione_genero'){
+    document.getElementById('otroGeneroInput').style.display = 'none'
+  } else {
+    document.getElementById('otroGeneroInput').style.display = 'inline'
+  }
+}
+function controlPais() {
+  if(paisSelect.value !== 'otro_pais' || paisSelect.value === 'seleccione_pais'){
+    document.getElementById('otroPaisInput').style.display = 'none'
+  } else {
+    document.getElementById('otroPaisInput').style.display = 'inline'
+  }
+}
+
+controlGenero()
+controlPais()
 
 function guardarUsuario(event) {
   event.preventDefault(); // Evitar el envío del formulario
-
+  controlBtnAceptar()
   // Obtener los valores ingresados por el usuario
   const nombreCompleto = nombreCompletoInput.value;
   const fechaNacimiento = fechaNacimientoInput.value;
   const correoElectronico = correoElectronicoInput.value;
   const contraseña = contraseñaInput.value;
-  const confirmacion = confirmacionInput.value;
   const genero = generoSelect.value === 'otro_genero' ? nuevoGeneroInput.value : generoSelect.value;
   const pais = paisSelect.value === 'otro_pais' ? nuevoPaisInput.value : paisSelect.value;
-
-  // Validar los campos (puedes agregar más validaciones según tus necesidades)
-  if (!nombreCompleto || !fechaNacimiento || !correoElectronico || !contraseña || !confirmacion || !genero || !pais) {
-    alert('Por favor, complete todos los campos');
-    return;
-  }
-
-  if (contraseña !== confirmacion) {
-    alert('Las contraseñas no coinciden');
-    return;
-  }
-
+  
   // Crear un objeto con los datos del usuario
   const usuario = {
     nombreCompleto,
