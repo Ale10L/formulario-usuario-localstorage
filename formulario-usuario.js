@@ -1,4 +1,3 @@
-// Obtener referencias a los elementos del formulario
 const form = document.querySelector('.form');
 const nombreCompletoInput = document.querySelector('.nombre_completo');
 const fechaNacimientoInput = document.querySelector('.fecha_nacimiento');
@@ -11,29 +10,32 @@ const paisSelect = document.querySelector('.pais');
 const nuevoPaisInput = document.querySelector('input[name="nuevo_pais"]');
 const btnAceptar = document.getElementById('btnAceptar');
 
-// Agregar evento de clic al botón Aceptar
 btnAceptar.addEventListener('click', guardarUsuario);
-nombreCompletoInput.addEventListener('input', controlBtnAceptar);
-fechaNacimientoInput.addEventListener('change', controlBtnAceptar);
-correoElectronicoInput.addEventListener('input', controlBtnAceptar);
-contraseñaInput.addEventListener('input', controlBtnAceptar);
-confirmacionInput.addEventListener('input', controlBtnAceptar);
-generoSelect.addEventListener('change', controlBtnAceptar);
-nuevoGeneroInput.addEventListener('input', controlBtnAceptar);
-paisSelect.addEventListener('change', controlBtnAceptar);
-nuevoPaisInput.addEventListener('input', controlBtnAceptar);
 
-controlBtnAceptar();
+let fechaValida = false;
+let correoValido = false;
+let contraseñasCoinciden = false;
+let generoValido = false;
+let paisValido = false;
 
 function controlBtnAceptar() {
-  // Validar los campos (puedes agregar más validaciones según tus necesidades)
-  const genero = generoSelect.value === 'otro_genero' ? nuevoGeneroInput.value : generoSelect.value;
-  const pais = paisSelect.value === 'otro_pais' ? nuevoPaisInput.value : paisSelect.value;
-  const camposIncompletos = !nombreCompletoInput.value || !fechaNacimientoInput.value || !correoElectronicoInput.value || !contraseñaInput.value || !confirmacionInput.value || !genero || !pais;
-  const controles = ((controlFecha() === true) && (controlContraseña() === true) && (controlEmail() === true) && (controlGenero() === true) && (controlPais() === true)) ? false : true
-  const formularioCompleto = camposIncompletos && controles;
-  btnAceptar.disabled = formularioCompleto;
-  console.log(btnAceptar.disabled)
+  generoValido = generoSelect.value === 'seleccione_genero' ? false : true;
+  paisValido = paisSelect.value === 'seleccione_pais' ? false : true;
+  const controles = fechaValida && correoValido && contraseñasCoinciden ? true : false
+  const camposIncompletos = (nombreCompletoInput.value === '' ||
+    fechaNacimientoInput.value === '' ||
+    correoElectronicoInput.value === '' ||
+    contraseñaInput.value === '' ||
+    confirmacionInput.value === '' ||
+    (generoValido &&
+      paisValido)) && controles;
+
+  const formularioCompleto = camposIncompletos;
+  if (formularioCompleto) {
+    btnAceptar.disabled = false;
+  } else {
+    btnAceptar.disabled = true;
+  }
 }
 
 function controlFecha() {
@@ -43,10 +45,10 @@ function controlFecha() {
   const edad = parseInt((fechaActual - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365))
   if (edad < 18) {
     document.getElementById('lbl_edad').style.display = 'inline'
-    return true;
+    fechaValida = false;
   } else {
     document.getElementById('lbl_edad').style.display = 'none'
-    return false;
+    fechaValida = true
   }
 }
 
@@ -54,39 +56,35 @@ function controlEmail() {
   const regexp = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
   if (regexp.test(correoElectronicoInput.value)) {
     document.getElementById('lbl_email').style.display = 'none'
-    return true;
+    correoValido = true;
   } else {
     document.getElementById('lbl_email').style.display = 'inline'
-    return false;
+    correoValido = false;
   }
 }
 
 function controlContraseña() {
   if ((contraseñaInput.value !== confirmacionInput.value) || ((contraseñaInput.value === '') && (confirmacionInput.value === ''))) {
     document.getElementById('lbl_coincidencia').style.display = 'inline'
-    return false;
+    contraseñasCoinciden = false;
   } else {
     document.getElementById('lbl_coincidencia').style.display = 'none'
-    return true;
+    contraseñasCoinciden = true;
   }
 }
 
 function controlGenero() {
   if (generoSelect.value !== 'otro_genero' || generoSelect.value === 'seleccione_genero') {
     document.getElementById('otroGeneroInput').style.display = 'none'
-    return false;
   } else {
     document.getElementById('otroGeneroInput').style.display = 'inline'
-    return true;
   }
 }
 function controlPais() {
   if (paisSelect.value !== 'otro_pais' || paisSelect.value === 'seleccione_pais') {
     document.getElementById('otroPaisInput').style.display = 'none'
-    return false;
   } else {
     document.getElementById('otroPaisInput').style.display = 'inline'
-    return true;
   }
 }
 
@@ -94,9 +92,8 @@ controlGenero()
 controlPais()
 
 function guardarUsuario(event) {
-  event.preventDefault(); // Evitar el envío del formulario
-  controlBtnAceptar()
-  // Obtener los valores ingresados por el usuario
+  event.preventDefault();
+
   const nombreCompleto = nombreCompletoInput.value;
   const fechaNacimiento = fechaNacimientoInput.value;
   const correoElectronico = correoElectronicoInput.value;
@@ -104,7 +101,6 @@ function guardarUsuario(event) {
   const genero = generoSelect.value === 'otro_genero' ? nuevoGeneroInput.value : generoSelect.value;
   const pais = paisSelect.value === 'otro_pais' ? nuevoPaisInput.value : paisSelect.value;
 
-  // Crear un objeto con los datos del usuario
   const usuario = {
     nombreCompleto,
     fechaNacimiento,
@@ -114,16 +110,12 @@ function guardarUsuario(event) {
     pais,
   };
 
-  // Obtener los usuarios existentes (si hay alguno) desde localStorage
   let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
 
-  // Agregar el nuevo usuario a la lista
   usuarios.push(usuario);
 
-  // Guardar la lista actualizada en localStorage
   localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-  // Limpiar el formulario
   form.reset();
 
   alert('Usuario guardado correctamente');
