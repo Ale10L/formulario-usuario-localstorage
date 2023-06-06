@@ -25,58 +25,68 @@ nuevoPaisInput.addEventListener('input', controlBtnAceptar);
 
 controlBtnAceptar();
 
-function controlBtnAceptar(){
+function controlBtnAceptar() {
   // Validar los campos (puedes agregar más validaciones según tus necesidades)
   const genero = generoSelect.value === 'otro_genero' ? nuevoGeneroInput.value : generoSelect.value;
   const pais = paisSelect.value === 'otro_pais' ? nuevoPaisInput.value : paisSelect.value;
   const camposIncompletos = !nombreCompletoInput.value || !fechaNacimientoInput.value || !correoElectronicoInput.value || !contraseñaInput.value || !confirmacionInput.value || !genero || !pais;
-  const controles = !controlFecha() || !controlContraseña() || !controlEmail() || !controlGenero() || !controlPais();
-  const formularioCompleto = camposIncompletos || controles;
+  const controles = ((controlFecha() === true) && (controlContraseña() === true) && (controlEmail() === true) && (controlGenero() === true) && (controlPais() === true)) ? false : true
+  const formularioCompleto = camposIncompletos && controles;
   btnAceptar.disabled = formularioCompleto;
   console.log(btnAceptar.disabled)
 }
 
 function controlFecha() {
-  const fechaNacimiento = new Date(fechaNacimientoInput.value).getUTCDate()
-  const fechaActual = new Date().getUTCDate()
-  const edad = fechaActual - fechaNacimiento
-  if (edad < 0) {
+  const fechaNacimiento = new Date(fechaNacimientoInput.value)
+  const fechaActual = new Date()
+  fechaNacimiento.setDate(fechaNacimiento.getDate() + 1)
+  const edad = parseInt((fechaActual - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365))
+  if (edad < 18) {
     document.getElementById('lbl_edad').style.display = 'inline'
+    return true;
   } else {
     document.getElementById('lbl_edad').style.display = 'none'
+    return false;
   }
 }
 
 function controlEmail() {
   const regexp = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-  //if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(correoElectronicoInput.value) ){
   if (regexp.test(correoElectronicoInput.value)) {
     document.getElementById('lbl_email').style.display = 'none'
+    return true;
   } else {
     document.getElementById('lbl_email').style.display = 'inline'
+    return false;
   }
 }
 
 function controlContraseña() {
   if ((contraseñaInput.value !== confirmacionInput.value) || ((contraseñaInput.value === '') && (confirmacionInput.value === ''))) {
     document.getElementById('lbl_coincidencia').style.display = 'inline'
+    return false;
   } else {
     document.getElementById('lbl_coincidencia').style.display = 'none'
+    return true;
   }
 }
 
 function controlGenero() {
-  if(generoSelect.value !== 'otro_genero' || generoSelect.value === 'seleccione_genero'){
+  if (generoSelect.value !== 'otro_genero' || generoSelect.value === 'seleccione_genero') {
     document.getElementById('otroGeneroInput').style.display = 'none'
+    return false;
   } else {
     document.getElementById('otroGeneroInput').style.display = 'inline'
+    return true;
   }
 }
 function controlPais() {
-  if(paisSelect.value !== 'otro_pais' || paisSelect.value === 'seleccione_pais'){
+  if (paisSelect.value !== 'otro_pais' || paisSelect.value === 'seleccione_pais') {
     document.getElementById('otroPaisInput').style.display = 'none'
+    return false;
   } else {
     document.getElementById('otroPaisInput').style.display = 'inline'
+    return true;
   }
 }
 
@@ -93,7 +103,7 @@ function guardarUsuario(event) {
   const contraseña = contraseñaInput.value;
   const genero = generoSelect.value === 'otro_genero' ? nuevoGeneroInput.value : generoSelect.value;
   const pais = paisSelect.value === 'otro_pais' ? nuevoPaisInput.value : paisSelect.value;
-  
+
   // Crear un objeto con los datos del usuario
   const usuario = {
     nombreCompleto,
@@ -117,4 +127,6 @@ function guardarUsuario(event) {
   form.reset();
 
   alert('Usuario guardado correctamente');
+
+  window.location.reload()
 }

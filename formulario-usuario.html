@@ -17,7 +17,7 @@
         usuarios</a>
   </nav>
   <div class="row">
-    <form class='form' onchange="controlBtnAceptar()">
+    <form class='form'>
       <div class='form_group'>
         <input type="text" class='nombre_completo' name='nombre_completo' required />
         <label class='label'>Nombre Completo</label>
@@ -90,7 +90,7 @@
         <span class='barra'></span>
       </div>
       <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-        <button class="btn btn-primary" id='btnAceptar' disabled>
+        <button class="btn btn-primary" id='btnAceptar' onchange="controlBtnAceptar()" disabled>
           Agregar
         </button>
         <button class="btn btn-danger">Cancelar</button>
